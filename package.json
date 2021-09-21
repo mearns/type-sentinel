@@ -1,5 +1,5 @@
 {
-  "name": "PROJECT_NAME",
+  "name": "type-sentinel",
   "version": "0.1.1",
   "description": "",
   "main": "dist/index.js",
@@ -11,14 +11,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:mearns/PROJECT_NAME.git"
+    "url": "git@github.com:mearns/type-sentinel.git"
   },
   "author": "Brian Mearns <mearns.b@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mearns/PROJECT_NAME/issues"
+    "url": "https://github.com/mearns/type-sentinel/issues"
   },
-  "homepage": "https://github.com/mearns/PROJECT_NAME/",
+  "homepage": "https://github.com/mearns/type-sentinel/",
   "engines": {
     "node": ">=16 <=18"
   },
