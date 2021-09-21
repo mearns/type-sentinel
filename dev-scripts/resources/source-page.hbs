@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{basename}} - {{dirname}}</title>
+
+    <style type='text/css'>
+        body {
+            padding: 0.5em;
+        }
+
+        h1 {
+            margin-bottom: 6pt;
+        }
+
+        h2 {
+            font: 13pt monospace;
+            margin-top: 6pt;
+        }
+
+        a {
+            color: #ccac5c;
+            text-decoration-color: #ccac5c40;
+        }
+
+        #file {
+            border: 1px solid gray;
+            text-align: left;
+            white-space: pre;
+        }
+
+        #linenumbers {
+            text-align: right;
+        }
+
+        #highlightedCode {
+            border-left: 1px solid darkgray;
+            padding: 0.35ex 0.35em;
+            width: 100%;
+        }
+
+        .selectedLine {
+            background-color: rgba(255, 255, 0, 0.3);
+        }
+
+        .hoverLine {
+            background-color: rgba(233, 210, 152, 0.3);
+        }
+
+        .line,
+        .linenumber {
+            display: inline-block;
+            width: 100%;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #101018;
+                color: #c0c0b8;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/a11y-light.min.css">
+    <link rel="stylesheet" media="(prefers-color-scheme: dark)"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/a11y-dark.min.css">
+    <link rel="stylesheet" media="(prefers-color-scheme: light)"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/a11y-light.min.css">
+</head>
+
+<body>
+    <h1>{{basename}}</h1>
+    <h2>{{{breadCrumbsHtml}}}</h2>
+
+    <nav>
+    </nav>
+
+    <pre id='file'>{{{highlightedCode}}}</pre>
+
+    <script type="text/javascript">
+        function getClasses(el) {
+            return new Set((el.getAttribute("class") || "").split(/\s+/));
+        }
+        function addClass(el, className) {
+            const classes = getClasses(el);
+            classes.add(className);
+            el.setAttribute("class", [...classes].join(" "));
+        }
+        function removeClass(el, className) {
+            const classes = getClasses(el);
+            classes.delete(className);
+            el.setAttribute("class", [...classes].join(" "));
+        }
+        const linenumberEls = document.getElementsByClassName("linenumber");
+        for (let i = 0; i < linenumberEls.length; i++) {
+            const linenumber = i + 1;
+            const el = document.getElementById(`n${linenumber}`);
+            const lineEl = document.getElementById(`l${linenumber}`);
+            [el, lineEl].forEach(e => {
+                e.onmouseover = () => {
+                    addClass(el, "hoverLine");
+                    addClass(lineEl, "hoverLine");
+                }
+                e.onmouseout = () => {
+                    removeClass(el, "hoverLine");
+                    removeClass(lineEl, "hoverLine");
+                }
+            });
+        }
+
+        function selectLineFromHash() {
+            unselectLines();
+            const hash = window.location.hash;
+            const match = /n([0-9]+)/.exec(hash);
+            if (match) {
+                const linenumber = parseInt(match[1], 10);
+                selectLineNumber(linenumber);
+            }
+        }
+
+        function unselectLines() {
+            const els = [...document.getElementsByClassName("selectedLine")];
+            for (const el of els) {
+                removeClass(el, "selectedLine");
+            }
+        }
+
+        function selectLineNumber(linenumber) {
+            const el = document.getElementById(`n${linenumber}`);
+            const lineEl = document.getElementById(`l${linenumber}`);
+            addClass(el, "selectedLine");
+            addClass(lineEl, "selectedLine");
+        }
+
+        selectLineFromHash();
+        window.addEventListener('hashchange', selectLineFromHash);
+    </script>
+</body>
+
+</html>
